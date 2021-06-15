@@ -1,11 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dropzone from 'react-dropzone'
 import { Icon } from 'antd'
+import Axios from 'axios'
 
-function FileUpload() {
+function FileUpload(props) {
+
+    const [Images, setImages] = useState([])
+
+    const dropHandler = files => {
+        let formData = new FormData();
+        const config = { // image 전송 시 필요
+            header: { 'content-type': 'multipart/form-data' }
+        }
+        formData.append("file", files[0])
+
+        Axios.post('/api/product/image', formData, config)
+            .then(response => {
+                if (response.data.success) {
+                    setImages([...Images, response.data.filePath])
+                    props.refreshFunction([...Images, response.datafilePath])
+                } else {
+                    alert('파일을 저장하는 데 실패했습니다')
+                }
+            })
+    }
+
+    const deleteHandler = image => {
+        const currentIndex = Images.indexOf(image)
+        
+        let newImages = [...Images]
+        newImages.splice(currentIndex, 1)
+
+        setImages(newImages)
+        props.refreshFunction(newImages)
+    }
+
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            <Dropzone onDrop={dropHandler}>
                 {({getRootProps, getInputProps}) => (
                     <div 
                     style={{ 
@@ -18,6 +50,16 @@ function FileUpload() {
                     </div>
                 )}
             </Dropzone>
+
+            <div style={{ display:'flex', width:'350px', height:'240px', overflowX:'auto', gap:'10px' }}>
+                { Images.map((image, index) => (
+                    <div onClick={()=> deleteHandler(image)} key={index} >
+                        <img 
+                            style={{ minWidth:'300px', width:'300px', height:'240px' }}
+                            src={`http://localhost:5000/${image}`} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

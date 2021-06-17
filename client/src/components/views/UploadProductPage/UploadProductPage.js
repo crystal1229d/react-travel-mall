@@ -46,14 +46,14 @@ function UploadProductPage(props) {
         event.preventDefault()  
 
         // 유효성 체크 (빈 값 여부)
-        if ( !Title || !Description || !Price | !Continent || !Images ) {
+        if ( !Title || !Description || !Price | !Continent || !Images.length ) {
             return alert("모든 값을 넣어주셔야 합니다")
         }
-
+    console.log(Images)    
         // 채운 값들을 서버에 request로 보낸다
         const body = {
             // 로그인 된 사람의 ID
-            wirter: props.user.userData._id,
+            writer: props.user.userData._id,
             title: Title,
             description: Description,
             price: Price,

@@ -7,7 +7,8 @@ function FileUpload(props) {
 
     const [Images, setImages] = useState([])
 
-    const dropHandler = files => {
+    const dropHandler = (files) => {
+
         let formData = new FormData();
         const config = { // image 전송 시 필요
             header: { 'content-type': 'multipart/form-data' }
@@ -18,7 +19,7 @@ function FileUpload(props) {
             .then(response => {
                 if (response.data.success) {
                     setImages([...Images, response.data.filePath])
-                    props.refreshFunction([...Images, response.datafilePath])
+                    props.refreshFunction([...Images, response.data.filePath])
                 } else {
                     alert('파일을 저장하는 데 실패했습니다')
                 }

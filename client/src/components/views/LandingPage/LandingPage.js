@@ -21,16 +21,16 @@ function LandingPage() {
     }, [])
 
     const renderCards = Products.map((product, index) => {
-        console.log('product', product)
-        console.log(product.images)
-        return <Card
-            cover={<img src={`http://localhost:5000/${product.images[0]}`} />}
+        return <Col key={index} lg={6} md={8} xs={24}>
+            <Card
+                cover={<img style={{ width:'100%', height:'150px' }} src={`http://localhost:5000/${product.images[0]}`} />}
             >
             <Meta
                 title={product.title} 
                 description={`${product.price}`}
             />
         </Card>
+        </Col> 
     })
 
     return (
@@ -43,8 +43,9 @@ function LandingPage() {
             {/* Filter */}
 
             {/* Search */}
-
-            { renderCards }
+            <Row gutter={[16, 16]}>
+                { renderCards }
+            </Row>
 
             <div style={{ justifyContent:'center' }}>
                 <Button>더보기</Button>      

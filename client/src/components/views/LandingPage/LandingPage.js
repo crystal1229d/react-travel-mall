@@ -31,6 +31,7 @@ function LandingPage() {
                 } else {
                     setProducts(response.data.productInfo)
                 }
+                setPostSize(response.data.postSize)
             } else {
                 alert('상품들을 가져오는데 실패했습니다');
             }
@@ -73,13 +74,18 @@ function LandingPage() {
             {/* Filter */}
 
             {/* Search */}
+
+            {/* Cards */}
             <Row gutter={[16, 16]}>
                 { renderCards }
             </Row>
 
-            <div style={{ justifyContent:'center' }}>
-                <Button onClick={loadMoreHandler}>더보기</Button>      
-            </div>
+            {
+                PostSize >= Limit &&
+                <div style={{ justifyContent:'center' }}>
+                    <Button onClick={loadMoreHandler}>더보기</Button>      
+                </div>
+            }
 
         </div>
     )

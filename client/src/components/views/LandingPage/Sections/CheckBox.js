@@ -23,7 +23,7 @@ function CheckBox(props) {
             newChecked.splice(currentIndex, 1)
         }
         setChecked(newChecked)
-        props.handlerFilters(newChecked)
+        props.handleFilters(newChecked)
 
     }
     

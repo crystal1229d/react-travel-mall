@@ -49,7 +49,7 @@ function UploadProductPage(props) {
         if ( !Title || !Description || !Price | !Continent || !Images.length ) {
             return alert("모든 값을 넣어주셔야 합니다")
         }
-    console.log(Images)    
+      
         // 채운 값들을 서버에 request로 보낸다
         const body = {
             // 로그인 된 사람의 ID

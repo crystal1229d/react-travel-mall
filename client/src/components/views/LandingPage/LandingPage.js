@@ -3,6 +3,8 @@ import React, { useState ,useEffect } from 'react'
 import { Button, Icon, Col, Card, Row, Carousel }  from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import ImageSlider from '../../utils/ImageSlider'
+import Checkbox from './Sections/CheckBox'
+import { continents } from './Sections/Datas'
 
 function LandingPage() {
 
@@ -64,6 +66,10 @@ function LandingPage() {
         </Col> 
     })
 
+    const handleFilters = () => {
+
+    }
+
     return (
         <div style={{ width:'75%', margin:'3rem auto' }}>
             
@@ -72,6 +78,11 @@ function LandingPage() {
             </div>
 
             {/* Filter */}
+
+            {/* CheckBox */}
+            <Checkbox list={continents} handleFilters={filter => handleFilters(filter, "continents")} />
+
+            {/* RadioBox */}
 
             {/* Search */}
 

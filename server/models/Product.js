@@ -36,6 +36,17 @@ const ProductSchema = mongoose.Schema({
    }
 }, { timestamp: true })
 
+// mongo db - control search results with weights
+ProductSchema.index({
+    title: 'text',
+    description: 'text'
+}, {
+    weights: {
+        title: 5,
+        description: 1
+    }
+})
+
 const Product = mongoose.model('Product', ProductSchema);
 
 module.exports = { Product }

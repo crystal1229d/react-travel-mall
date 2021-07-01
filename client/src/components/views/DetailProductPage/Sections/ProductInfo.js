@@ -27,7 +27,7 @@ function ProductInfo(props) {
             <br />
 
             <div style={{ display:'flex', justifyContent:'center' }}>
-                <Button size="large" shape="round" type="danger" onClic={clickHandler}>
+                <Button size="large" shape="round" type="danger" onClick={clickHandler}>
                     Add to Cart
                 </Button>
             </div>

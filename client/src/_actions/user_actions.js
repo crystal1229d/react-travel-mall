@@ -33,7 +33,7 @@ export function auth(){
     .then(response => response.data);
 
     return {
-        type: ADD_TO_CART,
+        type: AUTH_USER,
         payload: request
     }
 }
@@ -52,7 +52,7 @@ export function addToCart(id){
     let body = {
         productId: id
     }
-    const request = axios.get(`${USER_SERVER}/addToCart`, body)
+    const request = axios.post(`${USER_SERVER}/addToCart`, body)
     .then(response => response.data);
 
     return {

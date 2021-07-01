@@ -20,6 +20,7 @@ function RightMenu(props) {
   };
 
   if (user.userData && !user.userData.isAuth) {
+   
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mail">
@@ -31,6 +32,7 @@ function RightMenu(props) {
       </Menu>
     )
   } else {
+
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="upload">

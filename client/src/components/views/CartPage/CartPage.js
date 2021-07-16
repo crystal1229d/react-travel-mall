@@ -22,7 +22,7 @@ function CartPage(props) {
             }
         }
 
-    })
+    }, [props.user.userData])
 
     return (
         <div>

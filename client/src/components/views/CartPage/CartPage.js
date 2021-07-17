@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { getCartItems } from '../../../_actions/user_actions'
+import UserCardBlock from './Sections/UserCardBlock';
 
 function CartPage(props) {
     
@@ -25,8 +26,14 @@ function CartPage(props) {
     }, [props.user.userData])
 
     return (
-        <div>
-            CartPage
+        <div style={{ width:'85%', margin:'3rem auto' }}>
+            
+            <h1>CartPage</h1>
+
+            <div>
+                <UserCardBlock products={props.user.cartDetail} />
+            </div>
+
         </div>
     )
 }

@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require("../models/User");
+const { Product } = require('../models/Product');
+const { Payment } = require('../models/Payment');
 
 const { auth } = require("../middleware/auth");
-const { Product } = require('../models/Product');
+const async = require('async');
+
 
 //=================================
 //             User
@@ -171,11 +174,65 @@ router.post('/successBuy', auth, (req, res) => {
 
     })
 
-
     // 2. Payment Collection 안에 자세한 결제 정보 넣어주기
+    transactionData.user = {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email
+    }
+    transactionData.data = req.body.paymentData
+    transactionData.product = history
 
+    // history 정보 저장
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $push: { history: history }, $set: { cart: [] } },
+        { new: true },
+        (err, user) => {
+            if (err) return res.json({ success: false, err })
 
-    // 3. Production Collection 안에 있는 sold 필드 정보 업데이트 시켜주기
+            // payment 에 transactionData 정보 저장
+            const payment = new Payment(transactionData)
+            payment.save((err, doc) => {
+                if (err) return res.json({ success: false, err })
+
+                // 3. Production Collection 안에 있는 sold 필드 정보 업데이트 시켜주기
+    
+                // 상품 당 몇 개의 quantity를 샀는지 
+                let products = [];
+                doc.product.forEach(item => {
+                    products.push({ 
+                        id: item.id,
+                        quantity: item.quantity
+                    })
+                })
+
+                // 위에서 만든 products 에서 for 문을 돌리며 그 안에서 조건문을 통해 
+                // 일치하는 Product Collection 의 각 product 의 sold 를 update 해야한다.
+                // => 코드가 복잡하고 더러워지므로 async 사용 (npm install async --save)
+                async.eachSeries(products, (item, callback) => {
+                    Product.update(
+                        { _id: item.id },
+                        {
+                            $inc: {
+                                "sold": item.quantity
+                            }
+                        },
+                        { new: false }, // update 된 document 를 frontend 로 결과값을 보내주지 않아도 되므로 false
+                        callback 
+                    )
+                }, (err) => {
+                    if (err) return res.status(400).json({ success: false, err })
+                    res.status(200).json({
+                        success: true,
+                        cart: user.cart,
+                        cartDetail: []
+                    })
+                })
+    
+            })
+        }
+    )
 
 
 })

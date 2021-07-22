@@ -1,18 +1,29 @@
-Hello, My Friends  
-Thank you for having interest in this repository ! 
+#Travel Shopping Website
 
-To use this application, 
+###Inflearn Clone Coding Project
 
-1. make dev.js file inside config folder 
-2. put mongoDB info into dev.js file 
-3. Type  " npm install " inside the root directory  ( Download Server Dependencies ) 
-4. Type " npm install " inside the client directory ( Download Front-end Dependencies )
+#####2021.06.13 - 2021.07.22
+#####SuJung Lee
 
+<br>
+###Features
+(1) Register + Login / Logout (Google, GitHub Account)
+(2) Listing Products 
+(3) Upload Products (Login required)
+(4) Add Products to Cart (Login required)
+(5) Buy Products via Paypal (Login required)
+(6) Listing Payment History (Login required)
 
-If you have problem, feel free to ask me ^^ 
+<br>
+###Skills
+MERN (MongoDB + Express JS + React + Node.js)
+(1) React, Redux
+(2) ant design
+(3) mongoDB (+ atlas)
+(4) Node.js
+(5) Express JS
+(6) Boiler-plate
 
-You can watch the tutorial for this app.
-
-https://www.youtube.com/channel/UCFyXA9x8lpL3EYWeYhj4C4Q?view_as=subscriber
-
+<br>
+###Preview
 

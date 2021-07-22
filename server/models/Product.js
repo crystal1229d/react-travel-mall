@@ -34,7 +34,7 @@ const ProductSchema = mongoose.Schema({
        type: Number,
        default: 0
    }
-}, { timestamp: true })
+}, { timestamps: true })
 
 // mongo db - control search results with weights
 ProductSchema.index({

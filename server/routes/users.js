@@ -157,12 +157,12 @@ router.get('/removeFromCart', auth, (req, res) => {
 
 router.post('/successBuy', auth, (req, res) => {
 
-    // 1. User Collection 안에 History 필드 안에 간단한 결제 정보 넣어주기
+
+    //1. User Collection 안에  History 필드 안에  간단한 결제 정보 넣어주기
     let history = [];
     let transactionData = {};
 
-    req.body.cartDetail.forEach((item) => { // map 을 써도 됨
-
+    req.body.cartDetail.forEach((item) => {
         history.push({
             dateOfPurchase: Date.now(),
             name: item.title,
@@ -171,19 +171,19 @@ router.post('/successBuy', auth, (req, res) => {
             quantity: item.quantity,
             paymentId: req.body.paymentData.paymentID
         })
-
     })
 
-    // 2. Payment Collection 안에 자세한 결제 정보 넣어주기
+    //2. Payment Collection 안에  자세한 결제 정보들 넣어주기 
     transactionData.user = {
         id: req.user._id,
         name: req.user.name,
         email: req.user.email
     }
+
     transactionData.data = req.body.paymentData
     transactionData.product = history
 
-    // history 정보 저장
+    //history 정보 저장 
     User.findOneAndUpdate(
         { _id: req.user._id },
         { $push: { history: history }, $set: { cart: [] } },
@@ -191,26 +191,28 @@ router.post('/successBuy', auth, (req, res) => {
         (err, user) => {
             if (err) return res.json({ success: false, err })
 
-            // payment 에 transactionData 정보 저장
+
+            //payment에다가  transactionData정보 저장 
             const payment = new Payment(transactionData)
             payment.save((err, doc) => {
                 if (err) return res.json({ success: false, err })
 
-                // 3. Production Collection 안에 있는 sold 필드 정보 업데이트 시켜주기
-    
-                // 상품 당 몇 개의 quantity를 샀는지 
+
+                //3. Product Collection 안에 있는 sold 필드 정보 업데이트 시켜주기 
+
+
+                //상품 당 몇개의 quantity를 샀는지 
+
                 let products = [];
                 doc.product.forEach(item => {
-                    products.push({ 
-                        id: item.id,
-                        quantity: item.quantity
-                    })
+                    products.push({ id: item.id, quantity: item.quantity })
                 })
 
                 // 위에서 만든 products 에서 for 문을 돌리며 그 안에서 조건문을 통해 
                 // 일치하는 Product Collection 의 각 product 의 sold 를 update 해야한다.
                 // => 코드가 복잡하고 더러워지므로 async 사용 (npm install async --save)
                 async.eachSeries(products, (item, callback) => {
+
                     Product.update(
                         { _id: item.id },
                         {
@@ -218,8 +220,8 @@ router.post('/successBuy', auth, (req, res) => {
                                 "sold": item.quantity
                             }
                         },
-                        { new: false }, // update 된 document 를 frontend 로 결과값을 보내주지 않아도 되므로 false
-                        callback 
+                        { new: false },
+                        callback
                     )
                 }, (err) => {
                     if (err) return res.status(400).json({ success: false, err })
@@ -228,13 +230,11 @@ router.post('/successBuy', auth, (req, res) => {
                         cart: user.cart,
                         cartDetail: []
                     })
-                })
-    
+                }
+                )
             })
         }
     )
-
-
 })
 
 module.exports = router;
